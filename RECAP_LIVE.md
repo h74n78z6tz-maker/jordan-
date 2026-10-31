@@ -27,6 +27,18 @@ Ce sont les instructions que suit la tâche programmée. Elles servent aussi pou
 5. Terminer par un court résumé en français pour chaque live : nombre de commandes, de clients
    et d'articles, total encaissé, et les 3 meilleurs clients.
 
+## Si les outils mcp__whatnot__* ne sont pas disponibles
+
+Appeler l'API REST directement avec curl. Le proxy de l'environnement injecte le jeton tout
+seul pour `api.whatnot.com`, il ne faut donc pas mettre d'en-tête d'authentification.
+
+- `GET https://api.whatnot.com/seller-api/rest/v2/shows?status=ended&limit=50`
+- `GET https://api.whatnot.com/seller-api/rest/v2/orders?limit=50&cursor=...`
+- `GET https://api.whatnot.com/seller-api/rest/v2/orders/<order_id>/items?limit=50`
+
+Les réponses ont la forme `{"data": [...], "next_cursor": ...}`. Si l'API répond 401, le jeton
+de l'environnement n'est pas valide : le dire dans le résumé et s'arrêter.
+
 ## Règles
 
 - L'API limite à environ 2 requêtes par seconde. En cas de réponse 429, attendre et réessayer.
